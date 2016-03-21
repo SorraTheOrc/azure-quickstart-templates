@@ -13,7 +13,7 @@ These templates are actually identical, with the exception of the default value 
 
 ## Edit Parameters 
 
-The first task is to set appropriate parametr values for the service. The form will look something like this:
+The first task is to set appropriate parameter values for the service. The form will look something like this:
  
  ![Create deployment](images/portal-create-params.png)
  
