@@ -6,7 +6,7 @@ This Microsoft Azure template creates an Azure Container Service cluster with a 
 
 Click the "Deploy to Azure" button and then follow the relevant walkthrough for your choise of orchestrator:
 
-1. [DC/OS](https://github.com/Azure/azure-quickstart-templates/blob/master/101-acs-dcos/docs/DCOSWalkthrough.md) - The DC/oS orchestrator [walkthrough](https://github.com/Azure/azure-quickstart-templates/blob/master/101-acs-dcos/docs/DCOSWalkthrough.md).
+1. [DC/OS](https://github.com/Azure/azure-quickstart-templates/blob/master/101-acs-dcos/docs/DCOSWalkthrough.md) - The DC/OS orchestrator [walkthrough](https://github.com/Azure/azure-quickstart-templates/blob/master/101-acs-dcos/docs/DCOSWalkthrough.md).
 2. [Swarm](https://github.com/Azure/azure-quickstart-templates/blob/master/101-acs-swarm/docs/SwarmWalkthrough.md) - The Docker Swarm orchestrator [walkthrough](https://github.com/Azure/azure-quickstart-templates/blob/master/101-acs-swarm/docs/SwarmWalkthrough.md).
 
 ## Deployment Tips:
