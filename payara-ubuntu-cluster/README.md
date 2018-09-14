@@ -59,8 +59,8 @@ Deployed controller VM (where Payara Admin Server runs) and the Payara site (app
 First of all, you'll need to get the domain name of the controller VM and the load balancer:
 
 ```
-ctlrDNS=$(az group deployment show -g my_payara_rg -n azuredeploy --query properties.outputs.controllerDNS.value)
-lbDNS=$(az group deployment show -g my_payara_rg -n azuredeploy --query properties.outputs.loadBalancer.value)
+ctlrDNS=$(az group deployment show -g my_payara_rg -n azuredeploy --query properties.outputs.controllerDNS.value --output tsv)
+lbDNS=$(az group deployment show -g my_payara_rg -n azuredeploy --query properties.outputs.loadBalancer.value --output tsv)
 ```
 
 An example controller DNS is like `controller-pubip-xyz123.someregion.cloudapp.azure.com`. An example load balancer DNS is
