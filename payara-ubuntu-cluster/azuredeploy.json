@@ -178,6 +178,36 @@
             "tags": {
                 "displayName": "setup-payara-controller"
             }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2017-03-30",
+            "location": "[parameters('location')]",
+            "copy": {
+                "count": "[parameters('serverCount')]",
+                "name": "instance-service-install-loop"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/',variables('payaraCommon').ctlrVmName,'/extensions/setup-payara')]"
+            ],
+            "name": "[concat(variables('payaraCommon').serverNamePrefix, copyindex(), '/setup-payara')]",
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Azure.Extensions",
+                "settings": {
+                    "fileUris": [
+                        "[variables('payaraCommon').setupScriptUri]"
+                    ]
+                },
+                "protectedSettings":{
+                    "commandToExecute": "[concat('bash ', variables('payaraCommon').setupScriptName, ' install-instance-service')]"
+                },
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0"
+            },
+            "tags": {
+                "displayName": "[concat('payara-service-install', copyIndex())]"
+            }
         }
     ],
     "outputs": {
@@ -214,7 +244,7 @@
             "osType": {
                 "offer": "UbuntuServer",
                 "publisher": "Canonical",
-                "sku": "18.04-LTS",
+                "sku": "16.04-LTS",
                 "version": "latest"
             },
             "setupScriptName": "setup_payara.sh",

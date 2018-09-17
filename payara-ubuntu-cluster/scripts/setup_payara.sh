@@ -49,6 +49,9 @@ EOF
     sudo -u $PAYARA_ADMIN ./asadmin start-domain production
 
     rm -f .passwordfile
+
+    # Install payara_production service in /etc/init.d so that Payara server starts up on VM reboots
+    sudo ./asadmin create-service production
 }
 
 function setup_payara_servers
@@ -65,7 +68,7 @@ function setup_payara_servers
         local node_name="${node_name_prefix}${i}"
         local server_name="PayaraServer${i}"
 
-        sudo -u $PAYARA_ADMIN ./asadmin --user admin --passwordfile .passwordfile create-node-ssh --nodehost $node_name --installdir $HOME_DIR/payara5 --nodedir $HOME_DIR/nodes --sshuser $PAYARA_ADMIN --sshkeyfile $PAYARA_ADMIN_ID_RSA_PATH --install true $server_name
+        sudo -u $PAYARA_ADMIN ./asadmin --user admin --passwordfile .passwordfile create-node-ssh --nodehost $node_name --installdir $HOME_DIR/payara5 --nodedir $HOME_DIR/payara5/glassfish/nodes --sshuser $PAYARA_ADMIN --sshkeyfile $PAYARA_ADMIN_ID_RSA_PATH --install true $server_name
     done
 
     sudo -u $PAYARA_ADMIN ./asadmin --user admin --passwordfile .passwordfile copy-config default-config cluster-config
@@ -90,17 +93,28 @@ function setup_payara_servers
     rm .passwordfile
 }
 
-machine_type=${1}
+function setup_payara_service_on_instance
+{
+    cd $HOME_DIR/payara5/bin
+
+    sudo ./asadmin create-service --nodedir $HOME_DIR/payara5/glassfish/nodes
+}
+
+config_type=${1}
 server_name_prefix=${2}
 server_count=${3}
 payara_admin_password=${4}
 ssh_priv_key_b64=${5}
 
-install_packages    # Should be done on both controller and server
+if [ "$config_type" != "install-instance-service" ]; then
+    install_packages    # Should be done on both controller and server
+fi
 
-if [ "$machine_type" = "controller" ]; then
+if [ "$config_type" = "controller" ]; then
     download_payara
     install_ssh_private_key $ssh_priv_key_b64
     setup_payara_admin_server $payara_admin_password
     setup_payara_servers $payara_admin_password $server_name_prefix $server_count
+elif [ "$config_type" = "install-instance-service" ] ; then
+    setup_payara_service_on_instance
 fi
